@@ -1,0 +1,15 @@
+# Archivos temporales de Visual Studio
+.vs/
+*.user
+*.suo
+
+# Archivos compilados
+bin/
+obj/
+
+# Archivos de configuraci�n local
+*.log
+*.tlog
+*.cache
+*.db
+*.env
