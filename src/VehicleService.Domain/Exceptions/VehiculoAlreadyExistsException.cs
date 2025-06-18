@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace VehicleService.Domain.Exceptions
 {
-    internal class VehiculoAlreadyExistsException
+    public class VehiculoAlreadyExistsException : DomainException
     {
+        public VehiculoAlreadyExistsException(string codigo)
+            : base($"Ya existe un vehículo con el código '{codigo}'.") { }
+
+        public VehiculoAlreadyExistsException(string campo, string valor)
+            : base($"Ya existe un vehículo con {campo}: '{valor}'.") { }
     }
 }

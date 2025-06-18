@@ -6,7 +6,17 @@ using System.Threading.Tasks;
 
 namespace VehicleService.Domain.Repositories
 {
-    internal class IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
+        IVehiculoRepository Vehiculos { get; }
+        ITipoVehiculoRepository TiposVehiculo { get; }
+        IMarcaRepository Marcas { get; }
+        IModeloRepository Modelos { get; }
+        IEstadoOperacionalRepository EstadosOperacionales { get; }
+
+        Task<int> SaveChangesAsync();
+        Task BeginTransactionAsync();
+        Task CommitTransactionAsync();
+        Task RollbackTransactionAsync();
     }
 }

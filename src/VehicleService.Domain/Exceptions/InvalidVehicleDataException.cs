@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace VehicleService.Domain.Exceptions
 {
-    internal class InvalidVehicleDataException
+    public class InvalidVehicleDataException : DomainException
     {
+        public InvalidVehicleDataException(string message) : base(message) { }
+
+        public InvalidVehicleDataException(string campo, string valor)
+            : base($"Valor inválido para {campo}: '{valor}'.") { }
     }
 }

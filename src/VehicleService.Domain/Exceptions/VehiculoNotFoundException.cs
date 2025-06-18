@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace VehicleService.Domain.Exceptions
 {
-    internal class VehiculoNotFoundException
+    public class VehiculoNotFoundException : DomainException
     {
+        public VehiculoNotFoundException(int vehiculoId)
+            : base($"Vehículo con ID {vehiculoId} no fue encontrado.") { }
+
+        public VehiculoNotFoundException(string codigo)
+            : base($"Vehículo con código '{codigo}' no fue encontrado.") { }
     }
 }

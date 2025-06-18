@@ -4,9 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using VehicleService.Domain.Entities;
+
 namespace VehicleService.Domain.Repositories
 {
-    internal class IMarcaRepository
+    public interface IMarcaRepository : IRepositoryBase<Marca>
     {
+        Task<Marca?> GetByNombreAsync(string nombre);
+        Task<bool> ExistsByNombreAsync(string nombre);
+        Task<Marca?> GetMarcaConModelosAsync(int marcaId);
     }
 }
