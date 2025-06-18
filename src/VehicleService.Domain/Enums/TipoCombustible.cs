@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace VehicleService.Domain.Enums
 {
-    internal class TipoCombustible
+    public enum TipoCombustible
     {
+        Diesel = 1,
+        Gasolina = 2,
+        Electrico = 3,
+        Hibrido = 4
     }
 }

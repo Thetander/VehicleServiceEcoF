@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace VehicleService.Domain.Enums
 {
-    internal class TipoMaquinaria
+    public enum TipoMaquinaria
     {
+        Ligera = 1,
+        Pesada = 2
     }
 }

@@ -15,6 +15,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleService.Infrastructu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleService.Persistence", "src\VehicleService.Persistence\VehicleService.Persistence.csproj", "{DE9B317D-55DD-4ACD-B669-5E1A1E12A66E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución", "Elementos de la solución", "{D107F4C8-89CC-BEA8-D3D7-CA6B7733353D}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,5 +100,8 @@ Global
 		{99DFB894-A1DB-44F1-9EF8-CD07FDB503B4} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{FF3C1C09-E25A-4CF8-85AE-EF34D0E1061D} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{DE9B317D-55DD-4ACD-B669-5E1A1E12A66E} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6D7762F6-574B-499B-A02B-57DF52BB2C63}
 	EndGlobalSection
 EndGlobal
