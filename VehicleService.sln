@@ -6,18 +6,38 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleService.API", "src\VehicleService.API\VehicleService.API.csproj", "{C7B10A89-51FB-4A61-B4EC-B49573CA9E7F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{31CA2B53-CBCF-4949-9FF6-ED13629F575A} = {31CA2B53-CBCF-4949-9FF6-ED13629F575A}
+		{99DFB894-A1DB-44F1-9EF8-CD07FDB503B4} = {99DFB894-A1DB-44F1-9EF8-CD07FDB503B4}
+		{DE9B317D-55DD-4ACD-B669-5E1A1E12A66E} = {DE9B317D-55DD-4ACD-B669-5E1A1E12A66E}
+		{FF3C1C09-E25A-4CF8-85AE-EF34D0E1061D} = {FF3C1C09-E25A-4CF8-85AE-EF34D0E1061D}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleService.Application", "src\VehicleService.Application\VehicleService.Application.csproj", "{31CA2B53-CBCF-4949-9FF6-ED13629F575A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{99DFB894-A1DB-44F1-9EF8-CD07FDB503B4} = {99DFB894-A1DB-44F1-9EF8-CD07FDB503B4}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleService.Domain", "src\VehicleService.Domain\VehicleService.Domain.csproj", "{99DFB894-A1DB-44F1-9EF8-CD07FDB503B4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleService.Infrastructure", "src\VehicleService.Infrastructure\VehicleService.Infrastructure.csproj", "{FF3C1C09-E25A-4CF8-85AE-EF34D0E1061D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{31CA2B53-CBCF-4949-9FF6-ED13629F575A} = {31CA2B53-CBCF-4949-9FF6-ED13629F575A}
+		{99DFB894-A1DB-44F1-9EF8-CD07FDB503B4} = {99DFB894-A1DB-44F1-9EF8-CD07FDB503B4}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleService.Persistence", "src\VehicleService.Persistence\VehicleService.Persistence.csproj", "{DE9B317D-55DD-4ACD-B669-5E1A1E12A66E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{31CA2B53-CBCF-4949-9FF6-ED13629F575A} = {31CA2B53-CBCF-4949-9FF6-ED13629F575A}
+		{99DFB894-A1DB-44F1-9EF8-CD07FDB503B4} = {99DFB894-A1DB-44F1-9EF8-CD07FDB503B4}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución", "Elementos de la solución", "{D107F4C8-89CC-BEA8-D3D7-CA6B7733353D}"
 	ProjectSection(SolutionItems) = preProject
+		.env = .env
 		.gitignore = .gitignore
+		docker-compose.yml = docker-compose.yml
+		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
 Global
