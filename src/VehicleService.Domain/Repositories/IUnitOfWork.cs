@@ -15,8 +15,10 @@ namespace VehicleService.Domain.Repositories
         IEstadoOperacionalRepository EstadosOperacionales { get; }
 
         Task<int> SaveChangesAsync();
-        Task BeginTransactionAsync();
+        Task <IDisposable>BeginTransactionAsync();
         Task CommitTransactionAsync();
         Task RollbackTransactionAsync();
+
+        Task<T> ExecuteWithRetryAsync<T>(Func<Task<T>> operation);
     }
 }

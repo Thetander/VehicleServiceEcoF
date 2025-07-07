@@ -24,7 +24,7 @@ namespace VehicleService.Domain.Entities
         public DateTime CreadoEn { get; private set; } = DateTime.UtcNow;
         public DateTime ActualizadoEn { get; private set; } = DateTime.UtcNow;
 
-        // Navigation properties - CORREGIDAS
+        // Navigation properties 
         public virtual TipoVehiculo Tipo { get; set; } = null!;
         public virtual Modelo Modelo { get; set; } = null!;
         public virtual ICollection<EstadoOperacionalVehiculo> EstadosOperacionales { get; private set; } = new List<EstadoOperacionalVehiculo>();
@@ -52,7 +52,8 @@ namespace VehicleService.Domain.Entities
             DateTime? fechaUltimoMantenimiento,
             DateTime? fechaProximoMantenimiento,
             DateTime creadoEn,
-            DateTime actualizadoEn)
+            DateTime actualizadoEn,
+            ICollection<EstadoOperacionalVehiculo> estadosOperacionales)
         {
             VehiculoId = vehiculoId;
             Codigo = codigo;
@@ -71,6 +72,8 @@ namespace VehicleService.Domain.Entities
             FechaProximoMantenimiento = fechaProximoMantenimiento;
             CreadoEn = creadoEn;
             ActualizadoEn = actualizadoEn;
+            EstadosOperacionales = estadosOperacionales ?? new List<EstadoOperacionalVehiculo>();
+
         }
 
         // Constructor interno - solo se usará a través del Factory
@@ -93,10 +96,10 @@ namespace VehicleService.Domain.Entities
             SetTipoMaquinaria(tipoMaquinaria);
             SetAñoFabricacion(añoFabricacion);
             SetFechaCompra(fechaCompra);
-            SetOdometros(odometroInicial, odometroInicial); // Al crear, ambos odómetros son iguales
+            SetOdometros(odometroInicial, odometroInicial);
             SetCapacidadCombustible(capacidadCombustible);
             SetCapacidadMotor(capacidadMotor);
-            Estado = EstadoVehiculo.Activo; // Estado por defecto
+            Estado = EstadoVehiculo.Activo;
         }
 
         // Métodos de validación y actualización
@@ -232,6 +235,29 @@ namespace VehicleService.Domain.Entities
             ActualizarFechaModificacion();
         }
 
+        public void CambiarEstadoConHistorial(EstadoVehiculo nuevoEstado, string motivo, string registradoPor)
+        {
+            if (!PuedeCambiarEstado(Estado, nuevoEstado))
+                throw new InvalidVehicleStateException(Estado.ToString(), nuevoEstado.ToString());
+
+            // Finalizar el estado actual si existe uno activo
+            var estadoActual = EstadosOperacionales.FirstOrDefault(e => e.FechaFin == null);
+            if (estadoActual != null)
+            {
+                estadoActual.FinalizarEstado(DateTime.UtcNow);
+            }
+
+            // Cambiar el estado del vehículo
+            Estado = nuevoEstado;
+            
+            // Crear nuevo registro de estado operacional
+            var nuevoEstadoOperacional = EstadoOperacionalVehiculo.CrearCambioEstado(
+                VehiculoId, nuevoEstado, motivo, registradoPor);
+            
+            EstadosOperacionales.Add(nuevoEstadoOperacional);
+            ActualizarFechaModificacion();
+        }
+
         public void ActivarVehiculo()
         {
             if (Estado == EstadoVehiculo.Activo)
@@ -315,5 +341,14 @@ namespace VehicleService.Domain.Entities
         }
 
         private void ActualizarFechaModificacion() => ActualizadoEn = DateTime.UtcNow;
+        public void RegistrarMantenimiento(DateTime fechaProximoMantenimiento)
+        {
+            FechaUltimoMantenimiento = DateTime.UtcNow;
+            if (fechaProximoMantenimiento <= DateTime.UtcNow)
+                throw new InvalidVehicleDataException("FechaProximoMantenimiento", "La fecha del próximo mantenimiento debe ser futura");
+            FechaProximoMantenimiento = fechaProximoMantenimiento;
+            ActualizarFechaModificacion();
+        }
     }
+
 }

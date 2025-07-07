@@ -17,10 +17,25 @@ namespace VehicleService.Domain.Repositories
         Task<IEnumerable<Vehiculo>> GetByEstadoAsync(EstadoVehiculo estado);
         Task<IEnumerable<Vehiculo>> GetVehiculosActivosAsync();
         Task<IEnumerable<Vehiculo>> GetVehiculosDisponiblesAsync();
-        Task<bool> ExistsByCodigoAsync(string codigo);
-        Task<bool> ExistsByPlacaAsync(string placa);
+        Task<bool> ExisteConCodigoAsync(string codigo);
+        Task<bool> ExisteConPlacaAsync(string placa);
         Task<IEnumerable<Vehiculo>> GetVehiculosConMantenimientoVencidoAsync();
         Task<Vehiculo?> GetVehiculoConDetallesAsync(int vehiculoId);
+        Task<(IEnumerable<Vehiculo> Vehiculos, int TotalRegistros)> GetFilteredAsync(
+    string? codigo,
+    string? placa,
+    int? tipoId,
+    int? modeloId,
+    EstadoVehiculo? estadoVehiculo,
+    TipoMaquinaria? tipoMaquinaria,
+    DateTime? fechaCompraDesde,
+    DateTime? fechaCompraHasta,
+    bool? requiereMantenimiento,
+    bool? mantenimientoVencido,
+    int pagina,
+    int tamañoPagina
+);
+
     }
 }
 

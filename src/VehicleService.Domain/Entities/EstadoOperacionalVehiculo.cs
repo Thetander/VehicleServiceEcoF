@@ -93,5 +93,32 @@ namespace VehicleService.Domain.Entities
         {
             SetFechaFin(fechaFin);
         }
+
+        // Métodos de factory estáticos
+        public static EstadoOperacionalVehiculo CrearEstadoInicial(int vehiculoId, string registradoPor)
+        {
+            return new EstadoOperacionalVehiculo(
+                vehiculoId,
+                EstadoVehiculo.Activo,
+                DateTime.UtcNow,
+                "Estado inicial del vehículo",
+                registradoPor
+            );
+        }
+
+        public static EstadoOperacionalVehiculo CrearCambioEstado(
+            int vehiculoId,
+            EstadoVehiculo nuevoEstado,
+            string motivo,
+            string registradoPor)
+        {
+            return new EstadoOperacionalVehiculo(
+                vehiculoId,
+                nuevoEstado,
+                DateTime.UtcNow,
+                motivo,
+                registradoPor
+            );
+        }
     }
 }
