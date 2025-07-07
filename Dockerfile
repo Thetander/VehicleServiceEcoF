@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
 EXPOSE 8080
 
-# Etapa de compilaci�n
+# Etapa de compilacion
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
@@ -15,7 +15,7 @@ COPY ["src/VehicleService.Infrastructure/VehicleService.Infrastructure.csproj", 
 COPY ["src/VehicleService.Persistence/VehicleService.Persistence.csproj", "src/VehicleService.Persistence/"]
 COPY ["shared/Shared.Security/Shared.Security.csproj", "shared/Shared.Security/"]
 
-# Copiar todo el c�digo fuente
+# Copiar todo el codigo fuente
 COPY . .
 
 # Cambiar al directorio del proyecto API
