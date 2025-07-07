@@ -20,13 +20,17 @@
 	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
   </ItemGroup>
 
+
 	<ItemGroup>
 		<ProjectReference Include="..\VehicleService.Application\VehicleService.Application.csproj" />
 		<ProjectReference Include="..\VehicleService.Infrastructure\VehicleService.Infrastructure.csproj" />
 		<ProjectReference Include="..\VehicleService.Persistence\VehicleService.Persistence.csproj" />
 		<ProjectReference Include="..\VehicleService.Domain\VehicleService.Domain.csproj" />
+		<ProjectReference Include="..\..\shared\Shared.Security\Shared.Security.csproj" />
 	</ItemGroup>
-
+	<ItemGroup>
+		<Protobuf Include="Protos\vehicle_service.proto" GrpcServices="Server" />
+	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Repositories\Migrations\" />
 	</ItemGroup>

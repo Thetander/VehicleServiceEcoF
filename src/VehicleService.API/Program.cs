@@ -3,17 +3,53 @@ using VehicleService.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using VehicleService.Infrastructure.Security;
+using VehicleService.Infrastructure.Extensions;
+using VehicleService.Application.Extensions;
+using VehicleService.Application.Services.Interfaces;
+using Shared.Security;
+using Shared.Security.Interceptors;
+using Shared.Security.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// CONFIGURACI”N HÕBRIDA: Primero appsettings, luego variables de entorno
+// Permitir HTTP/2 inseguro para gRPC (solo para desarrollo) red privada? vpm o.o e_e 
+AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
+//  Primero appsettings, luego variables de entorno
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables(); // Las variables de entorno SOBREESCRIBEN appsettings
 
+// Configurar JwtSettings exactamente igual que AuthService
+builder.Services.Configure<JwtSettings>(options =>
+{
+    // Primero cargar desde configuraci√≥n
+    builder.Configuration.GetSection("JwtSettings").Bind(options);
+
+    // Luego sobrescribir con variables de entorno si existen
+    if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("JWT_SECRET")))
+        options.Secret = Environment.GetEnvironmentVariable("JWT_SECRET")!;
+
+    if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("JWT_EXPIRATION_MINUTES")))
+        options.ExpirationInMinutes = int.Parse(Environment.GetEnvironmentVariable("JWT_EXPIRATION_MINUTES")!);
+
+    if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("JWT_ISSUER")))
+        options.Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER")!;
+
+    if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("JWT_AUDIENCE")))
+        options.Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE")!;
+});
+
 // Servicio de persistencia
 builder.Services.AddPersistenceServices(builder.Configuration);
+
+// Servicios de aplicaci√≥n
+builder.Services.AddApplicationServices();
+
+// Servicios de infraestructura
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 // Registrar el DatabaseWaitService
 builder.Services.AddTransient<DatabaseWaitService>();
@@ -23,7 +59,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configurar CORS si es necesario
+// Configurar 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -33,10 +69,15 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
+builder.Services.AddGrpc(options =>
+{
+    options.Interceptors.Add<JwtInterceptor>();
+    options.Interceptors.Add<AuthorizationInterceptor>();
+});
 
 var app = builder.Build();
 
-// Esperar a que la base de datos estÈ lista ANTES de las migraciones
+// Esperar a que la base de datos est lista ANTES de las migraciones
 using (var scope = app.Services.CreateScope())
 {
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
@@ -122,7 +163,25 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Registrar el servicio gRPC
+app.MapGrpcService<VehicleServiceGrpc>();
+
 app.MapGet("/", () => "VehicleService API is running");
 app.MapGet("/health", () => "Healthy");
+
+// Endpoint de debugging para probar el servicio de veh√≠culos
+app.MapGet("/debug/vehiculos", async (IVehiculoService vehiculoService) =>
+{
+    try 
+    {
+        var vehiculos = await vehiculoService.ObtenerTodosVehiculosAsync();
+        return Results.Ok(vehiculos);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Error: {ex.Message}", statusCode: 500);
+    }
+});
 
 app.Run();
