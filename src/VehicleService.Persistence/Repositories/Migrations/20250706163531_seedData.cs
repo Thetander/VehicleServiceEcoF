@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace VehicleService.Persistence.Repositories.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class seedData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -166,6 +166,16 @@ namespace VehicleService.Persistence.Repositories.Migrations
                     { 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 2023, 7.0m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Sedán deportivo", 2, "Civic", 12.0m, "Gasolina" },
                     { 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 2023, 12.0m, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Camioneta pickup", 3, "Silverado", 15.0m, "Diesel" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Vehiculos",
+                columns: new[] { "VehiculoId", "ActualizadoEn", "AñoFabricacion", "CapacidadCombustible", "CapacidadMotor", "Codigo", "CreadoEn", "Estado", "FechaCompra", "FechaProximoMantenimiento", "FechaUltimoMantenimiento", "ModeloId", "OdometroActual", "OdometroInicial", "Placa", "TipoId", "TipoMaquinaria" },
+                values: new object[] { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 2023, 45.0m, "1.8L", "VH-2024-001", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Activo", new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Utc), null, null, 1, 1500m, 0m, "ABC-123", 1, "Ligera" });
+
+            migrationBuilder.InsertData(
+                table: "EstadoOperacionalVehiculo",
+                columns: new[] { "EstadoId", "CreadoEn", "Estado", "FechaFin", "FechaInicio", "Motivo", "RegistradoPor", "VehiculoId" },
+                values: new object[] { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Activo", null, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Vehículo puesto en servicio inicial", "Sistema", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_EstadoOperacionalVehiculo_VehiculoId",

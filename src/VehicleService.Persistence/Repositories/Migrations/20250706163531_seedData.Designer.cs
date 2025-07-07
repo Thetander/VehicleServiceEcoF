@@ -12,8 +12,8 @@ using VehicleService.Persistence;
 namespace VehicleService.Persistence.Repositories.Migrations
 {
     [DbContext(typeof(VehicleDbContext))]
-    [Migration("20250620151505_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250706163531_seedData")]
+    partial class seedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,6 +66,18 @@ namespace VehicleService.Persistence.Repositories.Migrations
                     b.HasIndex("VehiculoId");
 
                     b.ToTable("EstadoOperacionalVehiculo", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            EstadoId = 1,
+                            CreadoEn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Estado = "Activo",
+                            FechaInicio = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Motivo = "Vehículo puesto en servicio inicial",
+                            RegistradoPor = "Sistema",
+                            VehiculoId = 1
+                        });
                 });
 
             modelBuilder.Entity("VehicleService.Domain.Entities.Marca", b =>
@@ -358,6 +370,26 @@ namespace VehicleService.Persistence.Repositories.Migrations
                     b.HasIndex("TipoId");
 
                     b.ToTable("Vehiculos", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            VehiculoId = 1,
+                            ActualizadoEn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            AñoFabricacion = 2023,
+                            CapacidadCombustible = 45.0m,
+                            CapacidadMotor = "1.8L",
+                            Codigo = "VH-2024-001",
+                            CreadoEn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Estado = "Activo",
+                            FechaCompra = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ModeloId = 1,
+                            OdometroActual = 1500m,
+                            OdometroInicial = 0m,
+                            Placa = "ABC-123",
+                            TipoId = 1,
+                            TipoMaquinaria = "Ligera"
+                        });
                 });
 
             modelBuilder.Entity("VehicleService.Domain.Entities.EstadoOperacionalVehiculo", b =>

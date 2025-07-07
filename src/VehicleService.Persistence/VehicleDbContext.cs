@@ -89,10 +89,10 @@ namespace VehicleService.Persistence
             {
                 entity.ToTable("TiposVehiculo");
 
-                // Clave primaria - CORREGIDA según el esquema DB
+                // Clave primaria 
                 entity.HasKey(t => t.TipoVehiculoId);
                 entity.Property(t => t.TipoVehiculoId)
-                    .HasColumnName("TipoId")  // Mapear a la columna TipoId de la DB
+                    .HasColumnName("TipoId")  
                     .ValueGeneratedOnAdd();
 
                 // Propiedades
@@ -101,7 +101,7 @@ namespace VehicleService.Persistence
                     .HasMaxLength(100)
                     .IsRequired();
 
-                // TipoMaquinaria como enum convertido a string - CORREGIDA
+               
                 entity.Property(t => t.TipoMaquinariaVehiculoId)
                     .HasColumnName("TipoMaquinaria")
                     .HasMaxLength(50)
@@ -429,6 +429,42 @@ namespace VehicleService.Persistence
                     Descripcion = "Camioneta pickup",
                     CreadoEn = baseTime,
                     ActualizadoEn = baseTime
+                }
+            );
+
+            // Semilla de datos para Vehiculos (agregando vehículo de prueba)
+            modelBuilder.Entity<Vehiculo>().HasData(
+                new
+                {
+                    VehiculoId = 1,
+                    Codigo = "VH-2024-001",
+                    TipoId = 1, // Automóvil
+                    ModeloId = 1, // Toyota Corolla
+                    Placa = "ABC-123",
+                    TipoMaquinaria = TipoMaquinaria.Ligera,
+                    AñoFabricacion = 2023,
+                    FechaCompra = new DateTime(2024, 1, 15, 0, 0, 0, DateTimeKind.Utc),
+                    OdometroInicial = 0m,
+                    OdometroActual = 1500m,
+                    CapacidadCombustible = 45.0m,
+                    CapacidadMotor = "1.8L",
+                    Estado = EstadoVehiculo.Activo,
+                    CreadoEn = baseTime,
+                    ActualizadoEn = baseTime
+                }
+            );
+
+            // Semilla de datos para Estados Operacionales del vehículo de prueba
+            modelBuilder.Entity<EstadoOperacionalVehiculo>().HasData(
+                new
+                {
+                    EstadoId = 1,
+                    VehiculoId = 1,
+                    Estado = EstadoVehiculo.Activo,
+                    FechaInicio = baseTime,
+                    Motivo = "Vehículo puesto en servicio inicial",
+                    RegistradoPor = "Sistema",
+                    CreadoEn = baseTime
                 }
             );
         }

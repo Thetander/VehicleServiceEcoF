@@ -48,10 +48,12 @@ namespace VehicleService.Persistence
             }
         }
 
-        public async Task BeginTransactionAsync()
+        public async Task<IDisposable> BeginTransactionAsync()
         {
             _transaction = await _context.Database.BeginTransactionAsync();
+            return _transaction;
         }
+
 
         public async Task CommitTransactionAsync()
         {
